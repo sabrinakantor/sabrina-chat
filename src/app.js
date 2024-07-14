@@ -22,7 +22,7 @@ app.use(express.json());
 
 const chatWithGemini = async (req, res) => { 
   const apiKey = process.env.API_KEY;
-  console.log(apiKey);
+
   const genAI = new GoogleGenerativeAI(apiKey);
 
   const model = genAI.getGenerativeModel({
@@ -45,11 +45,12 @@ const chatWithGemini = async (req, res) => {
     ],
   });
 
-  const result = await chatSession.sendMessage("hi there. whats up");  
+  const result = await chatSession.sendMessage(req.body.input);  
   res.send(result)
 }
 
 app.get('/', chatWithGemini);
+app.post('/chat', chatWithGemini);
 
 app.use('/api/v1', api);
 
